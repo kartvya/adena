@@ -11,7 +11,6 @@ export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
 ) {
-  // Prefer the user's selected theme from the app store; fallback to system
   const selectedTheme = useAppStore((s) => s.theme);
   const systemTheme = useColorScheme() ?? 'light';
   const theme = selectedTheme || systemTheme;

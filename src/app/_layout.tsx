@@ -9,7 +9,7 @@ const MainLayout = () => {
   const navigation = useRouter();
 
   useEffect(() => {
-    navigation.navigate("/welcome");
+    navigation.replace("/welcome");
   }, []);
 
   return <Stack screenOptions={{ headerShown: false }} />;
