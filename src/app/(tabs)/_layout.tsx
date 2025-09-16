@@ -1,5 +1,6 @@
 import { HapticTab } from '@/src/components/haptic-tab';
 import { useThemeColor } from '@/src/hooks/use-theme-color';
+import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
@@ -27,11 +28,11 @@ export default function TabLayout() {
       },
       }}>
       <Tabs.Screen
-      name="home"
+      name="assets"
       options={{
-        title: 'Home',
+        title: 'Assets',
         tabBarIcon: ({ color }) => (
-        <FontAwesome size={28} name="home" color={color} style={{ alignSelf: 'center' }} />
+          <Entypo name="wallet" size={28} color={color} style={{ alignSelf: 'center' }} />
         ),
       }}
       />

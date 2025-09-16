@@ -46,13 +46,13 @@ const ConnectWallet = () => {
     }
 
     const handleConnect = () => {
-        if (!validateInputs()) return;
+        // if (!validateInputs()) return;
         setIsLoading(true);
         try {
             setTimeout(() => {
                 setUser({ id: walletId.trim(), name: fullName.trim() })
                 setIsLoading(false);
-                replace('/(tabs)/home');
+                replace('/(main)/dashboard');
             }, 2000);
         } catch (error) {
             setIsLoading(false);
