@@ -53,7 +53,7 @@ const ConnectWallet = () => {
                 setUser({ id: walletId.trim(), name: fullName.trim() })
                 setIsLoading(false);
                 replace('/(main)/dashboard');
-            }, 2000);
+            }, 0);
         } catch (error) {
             setIsLoading(false);
         }

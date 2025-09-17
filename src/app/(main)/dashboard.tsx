@@ -5,8 +5,9 @@ import { ThemedText } from '@/src/components/themed-text'
 import { useAppStore } from '@/src/store'
 import { Feather, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import * as Clipboard from 'expo-clipboard'
+import { navigate } from 'expo-router/build/global-state/routing'
 import React from 'react'
-import { Image, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native'
+import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
 const ACCENT = '#007bffff'
 const CARD = '#23232aff'
@@ -148,18 +149,19 @@ const Dashboard = () => {
 
       {/* Bottom search pill */}
       <View style={styles.bottomBar} pointerEvents="box-none">
-        <View style={styles.searchPill}>
+      <HapticTab
+      style={styles.searchPill}
+            onPress={() => navigate('/searchAssets')}
+          >
           <Feather name="search" size={18} color={MUTED} />
-          <TextInput
-            editable={false}
-            placeholder="Search"
-            placeholderTextColor={MUTED}
-            style={{ color: 'white', flex: 1, paddingVertical: Platform.OS === 'ios' ? 10 : 6 }}
-          />
-        </View>
-        <Pressable style={styles.swapBtn}>
+            <ThemedText >Search</ThemedText>        
+        </HapticTab>
+        <HapticTab 
+          style={styles.swapBtn}
+          onPress={() => navigate('/swapAssets')}
+        >
           <ThemedText style={styles.swapText}>Swap</ThemedText>
-        </Pressable>
+        </HapticTab>
       </View>
     </ScreenWrapper>
   )
