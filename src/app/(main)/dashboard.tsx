@@ -4,6 +4,7 @@ import Spacer from '@/src/components/Spacer'
 import { HapticTab } from '@/src/components/haptic-tab'
 import { ThemedText } from '@/src/components/themed-text'
 import { useAppStore } from '@/src/store'
+import { shortAddress, TOKENS } from '@/src/utils'
 import { Feather, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import * as Clipboard from 'expo-clipboard'
 import { navigate } from 'expo-router/build/global-state/routing'
@@ -15,25 +16,7 @@ const CARD = '#23232aff'
 const MUTED = '#9BA1A6'
 const SUCCESS = '#2ecc71'
 
-type Token = {
-  name: string
-  symbol: string
-  price: string
-  change: number
-}
 
-const TOKENS: Token[] = [
-  { name: 'Ethereum', symbol: 'ETH', price: '$4,502.13', change: -0.44 },
-  { name: 'USD Coin', symbol: 'USDC', price: '$1.00', change: 0.0 },
-  { name: 'Pepe', symbol: 'PEPE', price: '$0.00000108', change: 0.69 },
-  { name: 'POL', symbol: 'POL', price: '$0.256', change: -2.71 },
-  { name: 'BNB Smart C...', symbol: 'BNB', price: '$928.76', change: 1.05 },
-]
-
-function shortAddress(addr: string) {
-  if (!addr) return ''
-  return addr.slice(0, 4) + addr.slice(4, 6) + '...' + addr.slice(-4)
-}
 
 const Dashboard = () => {
   const user = useAppStore((s) => s.user)
@@ -53,7 +36,8 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <ScreenWrapper>
+    <>
+      <ScreenWrapper>
         <View style={styles.headerRow}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
             <HapticTab style={styles.avatarWrap} onPress={handleProfilePress}>
@@ -84,96 +68,98 @@ const Dashboard = () => {
             </HapticTab>
           </View>
         </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        <Spacer gap={10} />
-        <View>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+          <Spacer gap={10} />
+          <View>
             <ThemedText type='title' >$0.00</ThemedText>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-            <View style={styles.greenDot} />
-            <ThemedText type='subtitle' style={{ color: SUCCESS, fontSize: 14 }}>0.00%</ThemedText>
-          </View>
-        </View>
-
-        <Spacer gap={10} />
-
-        <View style={styles.actionsRow}>
-          <HapticTab style={styles.actionTile}>
-            <MaterialCommunityIcons name="bank-outline" size={20} color={ACCENT} />
-            <ThemedText style={styles.actionLabel} type='subtitle'>Buy/Sell</ThemedText>
-          </HapticTab>
-          <HapticTab style={styles.actionTile} >
-            <Ionicons name="send" size={20} color={ACCENT} />
-            <ThemedText style={styles.actionLabel} type='subtitle'>Send</ThemedText>
-          </HapticTab>
-          <HapticTab style={styles.actionTile}>
-            <FontAwesome5 name="arrow-circle-down" size={20} color={ACCENT} />
-            <ThemedText style={styles.actionLabel} type='subtitle'>Receive</ThemedText>
-          </HapticTab>
-        </View>
-
-        <Spacer gap={10} />
-
-        <View style={styles.card}>
-          <View style={{ flexDirection: 'row', gap: 12, flex: 1 }}>
-            <View style={styles.cardIcon}>
-              <Ionicons name="card-outline" size={18} color="white" />
-            </View>
-            <View style={{ flex: 1 }}>
-              <ThemedText style={{ fontSize: 16, fontFamily: 'Montserrat-Bold' }}>Get your first token</ThemedText>
-              <ThemedText style={{ color: MUTED, fontSize: 13 }} type='subtitle'>Fund your wallet by buying crypto or transferring from another account.</ThemedText>
+              <View style={styles.greenDot} />
+              <ThemedText type='subtitle' style={{ color: SUCCESS, fontSize: 14 }}>0.00%</ThemedText>
             </View>
           </View>
-          <View style={styles.requiredPill}>
-            <ThemedText style={{ fontSize: 12, color: '#D1D5DB' }}>Required</ThemedText>
+
+          <Spacer gap={10} />
+
+          <View style={styles.actionsRow}>
+            <HapticTab style={styles.actionTile}>
+              <MaterialCommunityIcons name="bank-outline" size={20} color={ACCENT} />
+              <ThemedText style={styles.actionLabel} type='subtitle'>Buy/Sell</ThemedText>
+            </HapticTab>
+            <HapticTab style={styles.actionTile} >
+              <Ionicons name="send" size={20} color={ACCENT} />
+              <ThemedText style={styles.actionLabel} type='subtitle'>Send</ThemedText>
+            </HapticTab>
+            <HapticTab style={styles.actionTile}>
+              <FontAwesome5 name="arrow-circle-down" size={20} color={ACCENT} />
+              <ThemedText style={styles.actionLabel} type='subtitle'>Receive</ThemedText>
+            </HapticTab>
           </View>
-        </View>
 
-        <Spacer gap={14} />
+          <Spacer gap={10} />
 
-        <ThemedText type="subtitle" style={{ marginBottom: 10 }}>Explore tokens</ThemedText>
-        {TOKENS.map((t) => (
-          <View key={t.symbol} style={styles.tokenRow}>
-            <View style={styles.tokenLeft}>
-              <View style={styles.tokenIcon}>
-                {t.symbol === 'ETH' ? (
-                  <MaterialCommunityIcons name="ethereum" size={20} color="#627EEA" />
-                ) : (
-                  <ThemedText style={{ fontFamily: 'Montserrat-Bold' }}>{t.symbol[0]}</ThemedText>
-                )}
+          <View style={styles.card}>
+            <View style={{ flexDirection: 'row', gap: 12, flex: 1 }}>
+              <View style={styles.cardIcon}>
+                <Ionicons name="card-outline" size={18} color="white" />
               </View>
-              <View>
-                <ThemedText style={{ fontSize: 16 }}>{t.name}</ThemedText>
-                <ThemedText style={{ color: MUTED, fontSize: 13 }}>{t.symbol}</ThemedText>
+              <View style={{ flex: 1 }}>
+                <ThemedText style={{ fontSize: 16, fontFamily: 'Montserrat-Bold' }}>Get your first token</ThemedText>
+                <ThemedText style={{ color: MUTED, fontSize: 13 }} type='subtitle'>Fund your wallet by buying crypto or transferring from another account.</ThemedText>
               </View>
             </View>
-            <View style={styles.tokenRight}>
-              <ThemedText style={{ fontSize: 16 }}>{t.price}</ThemedText>
-              <ThemedText style={{ color: t.change >= 0 ? SUCCESS : '#ef4444', fontSize: 13 }}>
-                {t.change >= 0 ? '▲ ' : '▼ '}
-                {Math.abs(t.change).toFixed(2)}%
-              </ThemedText>
+            <View style={styles.requiredPill}>
+              <ThemedText style={{ fontSize: 12, color: '#D1D5DB' }}>Required</ThemedText>
             </View>
           </View>
-        ))}
-      </ScrollView>
 
-      {/* Bottom search pill */}
-      <View style={styles.bottomBar} pointerEvents="box-none">
-      <HapticTab
-      style={styles.searchPill}
+          <Spacer gap={14} />
+
+          <ThemedText type="subtitle" style={{ marginBottom: 10 }}>Explore tokens</ThemedText>
+          {TOKENS.map((t) => (
+            <View key={t.symbol} style={styles.tokenRow}>
+              <View style={styles.tokenLeft}>
+                <View style={styles.tokenIcon}>
+                  {t.symbol === 'ETH' ? (
+                    <MaterialCommunityIcons name="ethereum" size={20} color="#627EEA" />
+                  ) : (
+                    <ThemedText style={{ fontFamily: 'Montserrat-Bold' }}>{t.symbol[0]}</ThemedText>
+                  )}
+                </View>
+                <View>
+                  <ThemedText style={{ fontSize: 16 }}>{t.name}</ThemedText>
+                  <ThemedText style={{ color: MUTED, fontSize: 13 }}>{t.symbol}</ThemedText>
+                </View>
+              </View>
+              <View style={styles.tokenRight}>
+                <ThemedText style={{ fontSize: 16 }}>{t.price}</ThemedText>
+                <ThemedText style={{ color: t.change >= 0 ? SUCCESS : '#ef4444', fontSize: 13 }}>
+                  {t.change >= 0 ? '▲ ' : '▼ '}
+                  {Math.abs(t.change).toFixed(2)}%
+                </ThemedText>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+
+        {/* Bottom search pill */}
+        <View style={styles.bottomBar} pointerEvents="box-none">
+          <HapticTab
+            style={styles.searchPill}
             onPress={() => navigate('/searchAssets')}
           >
-          <Feather name="search" size={18} color={MUTED} />
-            <ThemedText >Search</ThemedText>        
-        </HapticTab>
-        <HapticTab 
-          style={styles.swapBtn}
-          onPress={() => navigate('/swapAssets')}
-        >
-          <ThemedText style={styles.swapText}>Swap</ThemedText>
-        </HapticTab>
-      </View>
+            <Feather name="search" size={18} color={MUTED} />
+            <ThemedText >Search</ThemedText>
+          </HapticTab>
+          <HapticTab
+            style={styles.swapBtn}
+            onPress={() => navigate('/swapAssets')}
+          >
+            <ThemedText style={styles.swapText}>Swap</ThemedText>
+          </HapticTab>
+        </View>
 
+
+      </ScreenWrapper>
       {profileModalVisible && (
         <ProfileModal
           visible={profileModalVisible}
@@ -181,8 +167,7 @@ const Dashboard = () => {
           userName={user?.name}
           userAddress={address}
         />
-      )}
-    </ScreenWrapper>
+      )}</>
   )
 }
 

@@ -1,17 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-    Animated,
-    Dimensions,
-    Image,
-    PanResponder,
-    Pressable,
-    StyleSheet,
-    View
+  Animated,
+  Dimensions,
+  Image,
+  PanResponder,
+  Pressable,
+  StyleSheet,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useThemeColor } from '../hooks/use-theme-color';
+import { shortAddress } from '../utils';
 import { HapticTab } from './haptic-tab';
 import { ThemedText } from './themed-text';
 
@@ -30,20 +30,15 @@ interface ProfileModalProps {
 const ProfileModal: React.FC<ProfileModalProps> = ({
   visible,
   onClose,
-  userName = 'kartvya',
+  userName = 'Testing User',
   userAddress = '0xa9EAe6b4C9a85748'
 }) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const backgroundColor = useThemeColor({}, 'background');
-  const textColor = useThemeColor({}, 'text');
-  
+
+
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
-  const shortAddress = (addr: string) => {
-    if (!addr) return '';
-    return addr.slice(0, 4) + addr.slice(4, 6) + '...' + addr.slice(-4);
-  };
+
 
   const handleClose = () => {
     Animated.parallel([
@@ -64,39 +59,29 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, gestureState) => {
-      return gestureState.dy > 0 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
-    },
-    onPanResponderGrant: () => {
-      setIsDragging(true);
+
+      return gestureState.dy > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
     },
     onPanResponderMove: (_, gestureState) => {
+
       if (gestureState.dy > 0) {
         translateY.setValue(gestureState.dy);
-        const progress = Math.min(gestureState.dy / 200, 1);
-        opacity.setValue(1 - progress * 0.5);
       }
     },
     onPanResponderRelease: (_, gestureState) => {
-      setIsDragging(false);
       if (gestureState.dy > 100 || gestureState.vy > 0.5) {
         handleClose();
       } else {
-        Animated.parallel([
-          Animated.spring(translateY, {
-            toValue: 0,
-            useNativeDriver: true,
-            tension: 100,
-            friction: 8,
-          }),
-          Animated.timing(opacity, {
-            toValue: 1,
-            duration: 200,
-            useNativeDriver: true,
-          })
-        ]).start();
+        Animated.spring(translateY, {
+          toValue: 0,
+          useNativeDriver: true,
+          tension: 100,
+          friction: 8,
+        }).start();
       }
     },
   });
+
 
   const handleAddWallet = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -131,31 +116,28 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   if (!visible) return null;
 
   return (
-    <Animated.View style={[styles.backdrop, { opacity }]}>
-      <Pressable style={styles.backdropPressable} onPress={handleClose} />
-      <Animated.View 
+    <View style={StyleSheet.absoluteFillObject}>
+      <Animated.View style={[styles.backdrop, { opacity }]}>
+        <Pressable style={styles.backdropPressable} onPress={handleClose} />
+      </Animated.View>
+      <Animated.View
         style={[
-          styles.container, 
-          { 
-            backgroundColor: backgroundColor,
-            transform: [{ translateY }] 
+          styles.container,
+          {
+            backgroundColor: "black",
+            transform: [{ translateY }]
           }
         ]}
         {...panResponder.panHandlers}
       >
         <SafeAreaView style={styles.safeArea}>
 
-          <View style={[
-            styles.dragHandle, 
-            { backgroundColor: isDragging ? '#9CA3AF' : '#D1D5DB' }
-          ]} />
-          
-
+          <View style={styles.dragHandle} />
           <View style={styles.profileHeader}>
             <View style={styles.avatarContainer}>
-              <Image 
-                source={require('@/src/assets/images/react-logo.png')} 
-                style={styles.avatarImage} 
+              <Image
+                source={require('@/src/assets/images/react-logo.png')}
+                style={styles.avatarImage}
               />
             </View>
             <View style={styles.userInfo}>
@@ -184,7 +166,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
           </HapticTab>
         </SafeAreaView>
       </Animated.View>
-    </Animated.View>
+    </View>
   );
 };
 
@@ -210,9 +192,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 4,
     backgroundColor: '#D1D5DB',
-    borderRadius: 2,
     alignSelf: 'center',
-    marginTop: 12,
     marginBottom: 20,
   },
   profileHeader: {

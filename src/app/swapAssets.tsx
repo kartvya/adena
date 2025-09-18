@@ -2,19 +2,21 @@ import Feather from '@expo/vector-icons/Feather'
 import { router } from 'expo-router'
 import React, { useEffect, useRef, useState } from 'react'
 import {
-    Animated,
-    Dimensions,
-    PanResponder,
-    Pressable,
-    StyleSheet,
-    Text,
-    View
+  Animated,
+  Dimensions,
+  PanResponder,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import HapticButton from '../components/haptic-loading-button'
 import { HapticTab } from '../components/haptic-tab'
+import NumericKeyboard from '../components/NumericKeyboard'
 import { ThemedText } from '../components/themed-text'
 import { useThemeColor } from '../hooks/use-theme-color'
+import { getTokenColor, getTokenIcon } from '../utils'
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 
@@ -22,12 +24,12 @@ const CARD = '#23232aff'
 const ACCENT = '#007bffff'
 const MUTED = '#9BA1A6'
 
-// Token data
+
 const tokens = [
-  { symbol: 'ETH', name: 'Ethereum', icon: '⟠', color: '#627EEA' },
-  { symbol: 'USDC', name: 'USD Coin', icon: '$', color: '#2775CA' },
-  { symbol: 'USDT', name: 'Tether', icon: '₮', color: '#26A17B' },
-  { symbol: 'BTC', name: 'Bitcoin', icon: '₿', color: '#F7931A' },
+  { symbol: 'ETH', name: 'Ethereum', icon: getTokenIcon('ETH'), color: getTokenColor('ETH') },
+  { symbol: 'USDC', name: 'USD Coin', icon: getTokenIcon('USDC'), color: getTokenColor('USDC') },
+  { symbol: 'USDT', name: 'Tether', icon: getTokenIcon('USDT'), color: getTokenColor('USDT') },
+  { symbol: 'BTC', name: 'Bitcoin', icon: getTokenIcon('BTC'), color: getTokenColor('BTC') },
 ]
 
 const SwapAssets = () => {
@@ -139,11 +141,6 @@ const SwapAssets = () => {
     setFromAmount(amount)
   }
 
-  const NumberButton = ({ number, onPress }: { number: string; onPress: () => void }) => (
-    <HapticTab style={styles.numberButton} onPress={onPress}>
-      <ThemedText style={styles.numberText}>{number}</ThemedText>
-    </HapticTab>
-  )
 
   return (
     <Animated.View style={[styles.backdrop, { opacity }]}>
@@ -244,32 +241,16 @@ const SwapAssets = () => {
        
 
  
-          <View style={styles.keypad}>
-            <View style={styles.keypadRow}>
-              <NumberButton number="1" onPress={() => handleNumberPress('1')} />
-              <NumberButton number="2" onPress={() => handleNumberPress('2')} />
-              <NumberButton number="3" onPress={() => handleNumberPress('3')} />
-            </View>
-            <View style={styles.keypadRow}>
-              <NumberButton number="4" onPress={() => handleNumberPress('4')} />
-              <NumberButton number="5" onPress={() => handleNumberPress('5')} />
-              <NumberButton number="6" onPress={() => handleNumberPress('6')} />
-            </View>
-            <View style={styles.keypadRow}>
-              <NumberButton number="7" onPress={() => handleNumberPress('7')} />
-              <NumberButton number="8" onPress={() => handleNumberPress('8')} />
-              <NumberButton number="9" onPress={() => handleNumberPress('9')} />
-            </View>
-            <View style={styles.keypadRow}>
-              <NumberButton number="." onPress={() => handleNumberPress('.')} />
-              <NumberButton number="0" onPress={() => handleNumberPress('0')} />
-              <HapticTab style={styles.numberButton} onPress={handleBackspace}>
-                <Feather name="delete" size={24} color={textColor} />
-              </HapticTab>
-            </View>
-            <View style={styles.bottomTextContainer}>
-           <HapticButton title="Select A token" onPress={handleSwapTokens} style={styles.selectTokenBottomText} isLoading={false} />
-          </View>
+          <NumericKeyboard
+            onNumberPress={handleNumberPress}
+            onBackspace={handleBackspace}
+            showDecimal={true}
+            buttonStyle={styles.numberButton}
+            textStyle={styles.numberText}
+          />
+          
+          <View style={styles.bottomTextContainer}>
+            <HapticButton title="Select A token" onPress={handleSwapTokens} style={styles.selectTokenBottomText} isLoading={false} />
           </View>
         </SafeAreaView>
       </Animated.View>
@@ -441,13 +422,6 @@ const styles = StyleSheet.create({
   percentageText: {
     fontSize: 16,
     fontFamily: 'Montserrat-SemiBold',
-  },
-  keypad: {
-    gap: 12,
-  },
-  keypadRow: {
-    flexDirection: 'row',
-    gap: 12,
   },
   numberButton: {
     flex: 1,

@@ -17,25 +17,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ThemedText } from '../components/themed-text'
 import { useThemeColor } from '../hooks/use-theme-color'
+import { favoriteTokens, getChainColor, getChainIcon, getTokenIcon, topTokens } from '../utils'
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 
-// Mock token data
-const favoriteTokens = [
-  { symbol: 'ETH', name: 'Ethereum', price: '$4,482.45', change: '-0.40%', isNegative: true, icon: '⟠' },
-  { symbol: 'WBTC', name: 'Wrapped Bitcoin', price: '$116,277.00', change: '+0.61%', isNegative: false, icon: '₿' },
-]
-
-const topTokens = [
-  { rank: 1, symbol: 'USDT', name: 'Tether', price: '$1.00', volume: '$994.42M Vol', change: '-0.02%', isNegative: true, color: '#26A17B' },
-  { rank: 2, symbol: 'USDC', name: 'USD Coin', price: '$1.00', volume: '$894.31M Vol', change: '0.00%', isNegative: false, color: '#2775CA' },
-  { rank: 3, symbol: 'BUSD', name: 'Binance Bridged USD...', price: '$1.00', volume: '$747.45M Vol', change: '-0.02%', isNegative: true, color: '#F0B90B' },
-  { rank: 4, symbol: 'ETH', name: 'Ethereum', price: '$4,500.10', volume: '$673.26M Vol', change: '-0.60%', isNegative: true, color: '#627EEA' },
-  { rank: 5, symbol: 'BASE ETH', name: 'Base ETH', price: '$4,500.10', volume: '$507.77M Vol', change: '-0.54%', isNegative: true, color: '#0052FF' },
-  { rank: 6, symbol: 'ALCX', name: 'AlCell', price: '$0.00254', volume: '$415.75M Vol', change: '-0.23%', isNegative: true, color: '#FF6B9D' },
-  { rank: 7, symbol: 'USDC', name: 'USD Coin', price: '$1.00', volume: '$219.61M Vol', change: '-0.26%', isNegative: true, color: '#2775CA' },
-  { rank: 8, symbol: 'UNI ETH', name: 'Unichain ETH', price: '$4,502.69', volume: '$176.34M Vol', change: '-0.54%', isNegative: true, color: '#FF007A' },
-]
 
 const CARD = '#23232aff'
 
@@ -59,7 +44,6 @@ const SearchAssets = () => {
     })
   }
 
-  // Pan responder for drag to dismiss
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, gestureState) => {
       return gestureState.dy > 0 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
@@ -70,7 +54,6 @@ const SearchAssets = () => {
     onPanResponderMove: (_, gestureState) => {
       if (gestureState.dy > 0) {
         translateY.setValue(gestureState.dy)
-        // Fade backdrop based on drag distance
         const progress = Math.min(gestureState.dy / 200, 1)
         opacity.setValue(1 - progress * 0.5)
       }
@@ -98,7 +81,6 @@ const SearchAssets = () => {
   })
 
   useEffect(() => {
-    // Animate in on mount
     translateY.setValue(SCREEN_HEIGHT)
     Animated.timing(translateY, {
       toValue: 0,
@@ -110,7 +92,6 @@ const SearchAssets = () => {
   const chains = ['All', 'Ethereum', 'Unichain', 'Base']
 
   return (
-    // <ThemedView style={styles.fullScreen}>
       <Animated.View style={[styles.backdrop, { opacity }]}>
         <Animated.View 
           style={[
@@ -123,13 +104,13 @@ const SearchAssets = () => {
           {...panResponder.panHandlers}
         >
         <SafeAreaView style={styles.safeArea}>
-          {/* Drag Handle */}
+
           <View style={[
             styles.dragHandle, 
             { backgroundColor: isDragging ? '#9CA3AF' : '#D1D5DB' }
           ]} />
           
-          {/* Search Input */}
+
           <View style={styles.searchContainer}>
             <View style={[styles.searchInputContainer, { backgroundColor: CARD }]}>
               <Feather name="search" size={20} color="#9CA3AF" />
@@ -178,7 +159,6 @@ const SearchAssets = () => {
               </View>
             </View>
 
-            {/* Top Tokens */}
             <View style={styles.section}>
               <View style={styles.topTokensHeader}>
                 <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
@@ -190,7 +170,7 @@ const SearchAssets = () => {
                 </View>
               </View>
 
-              {/* Chain Filter */}
+
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chainFilter}>
                 {chains.map((chain, index) => (
                   <Pressable 
@@ -215,7 +195,7 @@ const SearchAssets = () => {
                 ))}
               </ScrollView>
 
-              {/* Token List */}
+
               <View style={styles.tokenList}>
                 {topTokens.map((token, index) => (
                   <Pressable key={index} style={styles.tokenItem}>
@@ -249,41 +229,11 @@ const SearchAssets = () => {
         </SafeAreaView>
         </Animated.View>
       </Animated.View>
-    // </ThemedView>
+
   )
 }
 
-// Helper functions
-const getChainColor = (chain: string): string => {
-  switch (chain) {
-    case 'Ethereum': return '#627EEA'
-    case 'Unichain': return '#FF007A'
-    case 'Base': return '#0052FF'
-    default: return '#9CA3AF'
-  }
-}
 
-const getChainIcon = (chain: string): string => {
-  switch (chain) {
-    case 'Ethereum': return '⟠'
-    case 'Unichain': return '🦄'
-    case 'Base': return '🔵'
-    default: return '●'
-  }
-}
-
-const getTokenIcon = (symbol: string): string => {
-  switch (symbol) {
-    case 'USDT': return '₮'
-    case 'USDC': return '$'
-    case 'BUSD': return '₿'
-    case 'ETH': return '⟠'
-    case 'BASE ETH': return '⟠'
-    case 'ALCX': return '◈'
-    case 'UNI ETH': return '🦄'
-    default: return '●'
-  }
-}
 
 export default SearchAssets
 

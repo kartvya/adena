@@ -3,6 +3,7 @@ import Spacer from '@/src/components/Spacer'
 import { HapticTab } from '@/src/components/haptic-tab'
 import { ThemedText } from '@/src/components/themed-text'
 import { useAppStore } from '@/src/store'
+import { shortAddress, TOKENS } from '@/src/utils'
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import * as Clipboard from 'expo-clipboard'
 import { navigate } from 'expo-router/build/global-state/routing'
@@ -14,25 +15,7 @@ const CARD = '#23232aff'
 const MUTED = '#9BA1A6'
 const SUCCESS = '#2ecc71'
 
-type Token = {
-  name: string
-  symbol: string
-  price: string
-  change: number // percentage
-}
 
-const TOKENS: Token[] = [
-  { name: 'Ethereum', symbol: 'ETH', price: '$4,502.13', change: -0.44 },
-  { name: 'USD Coin', symbol: 'USDC', price: '$1.00', change: 0.0 },
-  { name: 'Pepe', symbol: 'PEPE', price: '$0.00000108', change: 0.69 },
-  { name: 'POL', symbol: 'POL', price: '$0.256', change: -2.71 },
-  { name: 'BNB Smart C...', symbol: 'BNB', price: '$928.76', change: 1.05 },
-]
-
-function shortAddress(addr: string) {
-  if (!addr) return ''
-  return addr.slice(0, 4) + addr.slice(4, 6) + '...' + addr.slice(-4)
-}
 
 const Assets = () => {
   const user = useAppStore((s) => s.user)
