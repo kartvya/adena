@@ -1,3 +1,4 @@
+import ProfileModal from '@/src/components/ProfileModal'
 import ScreenWrapper from '@/src/components/ScreenWrapper'
 import Spacer from '@/src/components/Spacer'
 import { HapticTab } from '@/src/components/haptic-tab'
@@ -37,18 +38,27 @@ function shortAddress(addr: string) {
 const Dashboard = () => {
   const user = useAppStore((s) => s.user)
   const address = '0xa9EAe6b4C9a85748'
+  const [profileModalVisible, setProfileModalVisible] = React.useState(false)
 
   const copyAddress = React.useCallback(() => {
     Clipboard.setStringAsync(address)
   }, [address])
 
+  const handleProfilePress = React.useCallback(() => {
+    setProfileModalVisible(true)
+  }, [])
+
+  const handleCloseProfileModal = React.useCallback(() => {
+    setProfileModalVisible(false)
+  }, [])
+
   return (
     <ScreenWrapper>
         <View style={styles.headerRow}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
-            <View style={styles.avatarWrap}>
+            <HapticTab style={styles.avatarWrap} onPress={handleProfilePress}>
               <Image source={require('@/src/assets/images/react-logo.png')} style={styles.avatarImg} />
-            </View>
+            </HapticTab>
             <View style={{ flex: 1 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                 <ThemedText style={styles.userName}>{user?.name ?? 'kartvya'}</ThemedText>
@@ -69,9 +79,9 @@ const Dashboard = () => {
             <Pressable style={styles.iconCircle}>
               <Ionicons name="scan-outline" size={18} color="white" />
             </Pressable>
-            <Pressable style={styles.iconCircle}>
+            <HapticTab style={styles.iconCircle} onPress={() => navigate('/settings')}>
               <Ionicons name="settings-outline" size={18} color="white" />
-            </Pressable>
+            </HapticTab>
           </View>
         </View>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
@@ -163,6 +173,15 @@ const Dashboard = () => {
           <ThemedText style={styles.swapText}>Swap</ThemedText>
         </HapticTab>
       </View>
+
+      {profileModalVisible && (
+        <ProfileModal
+          visible={profileModalVisible}
+          onClose={handleCloseProfileModal}
+          userName={user?.name}
+          userAddress={address}
+        />
+      )}
     </ScreenWrapper>
   )
 }
