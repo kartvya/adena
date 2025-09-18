@@ -11,10 +11,11 @@ import {
   View
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import HapticButton from '../components/haptic-loading-button'
-import { HapticTab } from '../components/haptic-tab'
-import NumericKeyboard from '../components/NumericKeyboard'
-import { ThemedText } from '../components/themed-text'
+import HapticButton from '../components/hapticLoadingButton'
+import { HapticTab } from '../components/hapticTab'
+
+import NumericKeyboard from '../components/numericKeyboard'
+import { ThemedText } from '../components/themedText'
 import { useThemeColor } from '../hooks/use-theme-color'
 import { getTokenColor, getTokenIcon } from '../utils'
 
@@ -265,9 +266,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: 1,
-    maxHeight: SCREEN_HEIGHT * 0.95,
-    marginTop: SCREEN_HEIGHT * 0.05,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    // maxHeight: SCREEN_HEIGHT * 0.95,
+    // marginTop: SCREEN_HEIGHT * 0.05,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },

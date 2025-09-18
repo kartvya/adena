@@ -2,8 +2,8 @@ import { Colors } from '@/src/constants/theme';
 import { useColorScheme } from '@/src/hooks/use-color-scheme.web';
 import { PropsWithChildren, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { ThemedText } from '../themed-text';
-import { ThemedView } from '../themed-view';
+import { ThemedText } from '../themedText';
+import { ThemedView } from '../themedView';
 import { IconSymbol } from './icon-symbol.ios';
 
 

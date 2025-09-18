@@ -1,5 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import Loading from "../components/Loading";
+import Loading from "../components/loading";
+
 
 export default function Index() {
   return (

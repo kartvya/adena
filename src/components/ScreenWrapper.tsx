@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 import { Platform, ViewStyle } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useThemeColor } from "../hooks/use-theme-color";
-import MyStatusBar from "./CustomeStatusBar";
-import { ThemedView } from "./themed-view";
+import MyStatusBar from "./customStatusBar";
+import { ThemedView } from "./themedView";
 
 
 interface ScreenWrapperProps {

@@ -2,10 +2,10 @@ import { navigate } from 'expo-router/build/global-state/routing';
 import LottieView from 'lottie-react-native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import HapticButton from '../components/haptic-loading-button';
-import ScreenWrapper from '../components/ScreenWrapper';
-import Spacer from '../components/Spacer';
-import { ThemedText } from '../components/themed-text';
+import HapticButton from '../components/hapticLoadingButton';
+import ScreenWrapper from '../components/screenWrapper';
+import Spacer from '../components/spacer';
+import { ThemedText } from '../components/themedText';
 
 const Welcome = () => {
   return (

@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { shortAddress } from '../utils';
-import { HapticTab } from './haptic-tab';
-import { ThemedText } from './themed-text';
+import { HapticTab } from './hapticTab';
+import { ThemedText } from './themedText';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 

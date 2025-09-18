@@ -1,4 +1,4 @@
-import { HapticTab } from '@/src/components/haptic-tab';
+import { HapticTab } from '@/src/components/hapticTab';
 import { useThemeColor } from '@/src/hooks/use-theme-color';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';

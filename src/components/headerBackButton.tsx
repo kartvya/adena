@@ -3,7 +3,7 @@ import { useNavigation } from 'expo-router';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { useThemeColor } from '../hooks/use-theme-color';
-import { HapticTab } from './haptic-tab';
+import { HapticTab } from './hapticTab';
 
 interface HeaderBackButtonProps {
     lightColor?: string;

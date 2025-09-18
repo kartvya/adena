@@ -2,8 +2,8 @@ import Feather from '@expo/vector-icons/Feather';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useThemeColor } from '../hooks/use-theme-color';
-import { HapticTab } from './haptic-tab';
-import { ThemedText } from './themed-text';
+import { HapticTab } from './hapticTab';
+import { ThemedText } from './themedText';
 
 interface NumericKeyboardProps {
   onNumberPress: (number: string) => void;

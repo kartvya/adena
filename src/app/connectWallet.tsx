@@ -1,11 +1,12 @@
 import { replace } from 'expo-router/build/global-state/routing'
 import React from 'react'
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native'
-import HapticButton from '../components/haptic-loading-button'
-import HeaderBackButton from '../components/header-back-button'
-import ScreenWrapper from '../components/ScreenWrapper'
-import Spacer from '../components/Spacer'
-import { ThemedText } from '../components/themed-text'
+import HapticButton from '../components/hapticLoadingButton'
+import HeaderBackButton from '../components/headerBackButton'
+
+import ScreenWrapper from '../components/screenWrapper'
+import Spacer from '../components/spacer'
+import { ThemedText } from '../components/themedText'
 import { useAppStore } from '../store'
 
 const ConnectWallet = () => {

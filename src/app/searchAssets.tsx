@@ -15,7 +15,7 @@ import {
   View
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ThemedText } from '../components/themed-text'
+import { ThemedText } from '../components/themedText'
 import { useThemeColor } from '../hooks/use-theme-color'
 import { favoriteTokens, getChainColor, getChainIcon, getTokenIcon, topTokens } from '../utils'
 
@@ -45,8 +45,10 @@ const SearchAssets = () => {
   }
 
   const panResponder = PanResponder.create({
-    onMoveShouldSetPanResponder: (_, gestureState) => {
-      return gestureState.dy > 0 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
+    onMoveShouldSetPanResponder: (evt, gestureState) => {
+      const startY = evt.nativeEvent.pageY - gestureState.moveY + gestureState.dy
+      const isInDragHandleArea = startY < 100 
+      return gestureState.dy > 5 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx) && isInDragHandleArea
     },
     onPanResponderGrant: () => {
       setIsDragging(true)
@@ -129,6 +131,9 @@ const SearchAssets = () => {
             style={styles.content} 
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 100 }}
+            scrollEventThrottle={16}
+            bounces={true}
+            nestedScrollEnabled={true}
           >
    
             <View style={styles.section}>
@@ -245,10 +250,14 @@ const styles = StyleSheet.create({
     flex:1
   },
   container: {
-    flex: 1,
-    maxHeight: SCREEN_HEIGHT * 0.95,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: SCREEN_HEIGHT * 0.95,
     marginTop: SCREEN_HEIGHT * 0.05,
-    
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   safeArea: {
     flex: 1,

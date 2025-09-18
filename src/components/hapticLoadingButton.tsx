@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { HapticTab } from './haptic-tab';
-import { ThemedText } from './themed-text';
+import { HapticTab } from './hapticTab';
+import { ThemedText } from './themedText';
 
 interface HapticLoadingButtonProps {
     title?: string;
